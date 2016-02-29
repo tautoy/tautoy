@@ -1,4 +1,6 @@
 *~
 *.pyc
 .python-version
+/.tox
+/.cache
 /docs/build
