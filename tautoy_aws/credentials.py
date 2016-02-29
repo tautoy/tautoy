@@ -31,4 +31,23 @@ class AwsCredentials(object):
     def __getattr__(self, profile):
         if profile in self._aws_credentials:
             return self._aws_credentials[profile]
-        raise AttributeError('No such profile "%d" is registered.' % profile)
+        raise AttributeError('No such profile "%s" is registered.' % profile)
+
+    def __getitem__(self, profile):
+        if profile in self._aws_credentials:
+            return self._aws_credentials[profile]
+        raise AttributeError('No such profile "%s" is registered.' % profile)
+
+    def __setitem__(self, profile, aws_credential):
+        if profile in self._aws_credentials:
+            raise AttributeError('A profile "%s" is already registered.' % profile)
+        if not isinstance(aws_credential, AwsCredential):
+            raise TypeError()
+        self._aws_credentials[profile] = aws_credential
+
+    def __len__(self):
+        return len(self._aws_credentials)
+
+    def __iter__(self):
+        for profile in sorted(self._aws_credentials):
+            yield profile
